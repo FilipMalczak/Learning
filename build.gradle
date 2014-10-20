@@ -1,0 +1,30 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+//mainClassName = "pl.webscrapers.grequests.examples.RunAllExamples"
+
+repositories {
+    mavenCentral()
+    
+}
+
+dependencies {
+    // Common dependencies
+    compile 'org.codehaus.groovy:groovy-all:2.3.6'
+    compile 'org.slf4j:slf4j-api:1.7.2'
+    compile 'nz.ac.waikato.cms.weka:weka-stable:3.6.11'
+
+
+    runtime 'org.slf4j:slf4j-log4j12:1.7.2'
+
+}
+
+test {
+    useJUnit()
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '1.12'
+}

@@ -1,4 +1,10 @@
-Learning
-========
+Systemy uczące się
+==================
 
-Systemy uczące się (2014/2015, sem. zim.), pon 11:15
+Repozytorium na kod używany podczas laboratoriów.
+
+Rok akademicki 2014/2015
+Semestr zimowy
+Pon 11:15
+
+Autor: Filip Malczak

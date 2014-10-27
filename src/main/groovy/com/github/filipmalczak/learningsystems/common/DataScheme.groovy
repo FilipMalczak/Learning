@@ -13,7 +13,7 @@ class DataScheme {
     /*
      * Maps nominal attributes into their domains (lists of their values).
      */
-    Map<String, List> nominalDomains
+    Map<String, List<String>> nominalDomains
 
     boolean isNominalAttribute(int attrIdx){
         nominalDomains.containsKey(attributeNames[attrIdx])
@@ -33,7 +33,7 @@ class DataScheme {
 
     boolean isNumericalAttribute(String attrName){ return !isNominalAttribute(attrName) }
 
-    List getDomain(String attrName){
+    List<String> getDomain(String attrName){
         assert isNominalAttribute(attrName)
         return nominalDomains[attrName]
     }

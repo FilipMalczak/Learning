@@ -1,5 +1,7 @@
 package com.github.filipmalczak.learningsystems.common
 
+import groovy.transform.Immutable
+
 /**
  * At this point we only allow numeric or nominal attributes. For laboratories sake this should be enough.
  *
@@ -7,13 +9,14 @@ package com.github.filipmalczak.learningsystems.common
  *
  * If something goes wrong SOME exception is raised.
  */
+@Immutable
 class DataScheme {
-    List<String> attributeNames
+    final List<String> attributeNames
 
     /*
      * Maps nominal attributes into their domains (lists of their values).
      */
-    Map<String, List<String>> nominalDomains
+    final Map<String, List<String>> nominalDomains
 
     boolean isNominalAttribute(int attrIdx){
         nominalDomains.containsKey(attributeNames[attrIdx])

@@ -6,11 +6,19 @@ import groovy.transform.Canonical
 class DataSet {
     String name
     DataScheme scheme
-    List<List> instances
+    List<List> data
 
+
+    List<Instance> getInstances(){
+        data.collect { List vector -> new Instance(vector, scheme) }
+    }
+
+    Instance getInstance(int i){
+        new Instance(data[i], scheme)
+    }
 
     List getAttributeSnapshot(int attrIdx){
-        return instances.collect { it[attrIdx] }
+        return data.collect { it[attrIdx] }
     }
 
     List getAttributeSnapshot(String attrName){
@@ -18,24 +26,24 @@ class DataSet {
     }
 
     /**
-     * ~= subset of instances with idxs <floor(size*from), ceiling(size*to)> where size is instances.size()
+     * ~= subset of data with idxs <floor(size*from), ceiling(size*to)> where size is data.size()
      */
     DataSet subset(double from, double to){
         return new DataSet(
             name+"-subset($from; $to)",
             scheme,
-            instances[Math.floor(from*instances.size())..Math.ceil(to*instances.size())]
+            data[Math.floor(from*data.size())..Math.ceil(to*data.size())]
         )
     }
 
     /**
-     * ~= subset of instances with idxs <from, to>
+     * ~= subset of data with idxs <from, to>
      */
     DataSet subset(int from, int to){
         return new DataSet(
             name+"-subset($from; $to)",
             scheme,
-            instances[from..to]
+            data[from..to]
         )
     }
 }

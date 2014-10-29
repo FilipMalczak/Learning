@@ -1,7 +1,13 @@
 package com.github.filipmalczak.learningsystems.common
 
+import groovy.transform.Immutable
 
+@Immutable
 class Instance extends AbstractList{
-    private @Delegate List values
-    private @Delegate DataScheme scheme
+    final @Delegate List values
+    final @Delegate DataScheme scheme
+
+    def getAt(String attrName){
+        values[scheme.getAttributeIndex(attrName)]
+    }
 }

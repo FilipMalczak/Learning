@@ -46,4 +46,22 @@ class DataSet {
             data[from..to]
         )
     }
+
+    /**
+     * classValIdx is number of class name in class domain, not number of class attribute.
+     */
+    List<Instance> getInstancesForClass(int classValIdx){
+        getInstancesForClass(scheme.classDomain[classValIdx])
+    }
+
+    /**
+     * classValueName is value of class attribute, not attributes name.
+     */
+    List<Instance> getInstancesForClass(String classValueName){
+        instances.findAll { it.classValue == classValueName }
+    }
+
+    int getSize(){
+        instances.size()
+    }
 }

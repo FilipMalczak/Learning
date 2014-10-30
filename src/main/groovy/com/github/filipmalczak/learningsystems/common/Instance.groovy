@@ -10,4 +10,8 @@ class Instance extends AbstractList{
     def getAt(String attrName){
         values[scheme.getAttributeIndex(attrName)]
     }
+
+    String getClassValue(){
+        getAt(classIdx)
+    }
 }

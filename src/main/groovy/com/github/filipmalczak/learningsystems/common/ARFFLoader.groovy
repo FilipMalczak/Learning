@@ -52,7 +52,7 @@ class ARFFLoader {
         return out
     }
 
-    DataSet load(BufferedReader reader){
+    DataSet load(int classIdx, BufferedReader reader){
         String name = null
         List<String> names = []
         Map<String, List<String>> domains = [:]
@@ -83,6 +83,6 @@ class ARFFLoader {
                 }
             }
         }
-        new DataSet(name, new DataScheme(names, domains), instances)
+        new DataSet(name, new DataScheme(classIdx, names, domains), instances)
     }
 }

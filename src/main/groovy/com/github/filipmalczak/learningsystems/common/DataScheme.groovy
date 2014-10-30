@@ -11,7 +11,16 @@ import groovy.transform.Immutable
  */
 @Immutable
 class DataScheme {
+    final int classIdx
     final List<String> attributeNames
+
+    String getClassName(){
+        attributeNames[classIdx]
+    }
+
+    List<String> getClassDomain(){
+        nominalDomains[className]
+    }
 
     /*
      * Maps nominal attributes into their domains (lists of their values).

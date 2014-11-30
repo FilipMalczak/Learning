@@ -10,7 +10,7 @@ class RangeDiscretizer extends AbstractDiscretizer {
     int rangeNumber
 
     @Override
-    List<Double> getCuts(int attrIdx, DataSet dataSet) {
+    List<Number> getCuts(int attrIdx, DataSet dataSet) {
         assert dataSet.scheme.isNumericalAttribute(attrIdx)
 
         List<Number> vals = dataSet.getAttributeSnapshot(attrIdx).sort()

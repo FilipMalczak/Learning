@@ -47,7 +47,10 @@ class Evaluation {
     }
 
     public float getTPRate(String className){
-        (resultsForClass[className].tp / getCountOfClass(className)) as float
+        def inClass = getCountOfClass(className)
+        if (inClass==0)
+            return 0.0
+        (resultsForClass[className].tp / inClass) as float
     }
 
     public float getRecall(String className){
@@ -55,11 +58,17 @@ class Evaluation {
     }
 
     public float getFPRate(String className){
-        (resultsForClass[className].fp / (resultsForClass[className].fp + resultsForClass[className].tn)) as float
+        int falses = (resultsForClass[className].fp + resultsForClass[className].tn)
+        if (falses == 0)
+            return 0.0
+        (resultsForClass[className].fp / falses) as float
     }
 
     public float getPrecision(String className){
-        (resultsForClass[className].tp / (resultsForClass[className].tp + resultsForClass[className].fp)) as float
+        int positives = (resultsForClass[className].tp + resultsForClass[className].fp)
+        if (positives==0)
+            return 0.0
+        (resultsForClass[className].tp / positives) as float
     }
 
     public float getFMeasure(String className){
@@ -118,11 +127,15 @@ class Evaluation {
         temp / getInstancesCount()
     }
 
+    String getCsvLine(){
+        [weightedTPRate, weightedFPRate, weightedAccuracy, weightedPrecision, weightedRecall, weightedFMeasure].join(";")
+    }
+
     @Override
     public String toString(){
         "{" +
             "'TP': $weightedTPRate, 'FP': $weightedFPRate, " +
-            "'Acc': $weightedAccuracy, 'Prec': $weightedPrecision, 'Rec': $weightedPrecision, " +
+            "'Acc': $weightedAccuracy, 'Prec': $weightedPrecision, 'Rec': $weightedRecall, " +
             "'F': $weightedFMeasure" +
             "}"
     }

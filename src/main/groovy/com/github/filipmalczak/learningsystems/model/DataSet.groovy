@@ -80,4 +80,18 @@ class DataSet {
         assert this.scheme == another.scheme
         new DataSet("${this.name}+${another.name}".toString(), scheme, (this.data + another.data) as List<List>)
     }
+
+    DataSet getCleanSet(){
+        def out = fullCopy
+        instances.each { Instance i ->
+            def duplicate = instances.find { Instance j ->
+                !j.equals(i) && j.modified(i.className, i.classValue).equals(i)
+            }
+            if (duplicate!=null) {
+                out.data.remove(i.values)
+                out.data.remove(duplicate)
+            }
+        }
+        out
+    }
 }

@@ -25,7 +25,7 @@ class DataScheme {
     /*
      * Maps nominal attributes into their domains (lists of their values).
      */
-    final Map<String, List<String>> nominalDomains
+    Map<String, List<String>> nominalDomains
 
     boolean isNominalAttribute(int attrIdx){
         nominalDomains.containsKey(attributeNames[attrIdx])

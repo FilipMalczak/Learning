@@ -21,6 +21,9 @@ class ILA implements ClassificationAlgorithm {
             List<DataSet> nonActive = subtables.tail()
             int combinationSize = 1
             while (!active.empty){
+                if (!(combinationSize<dataSet.scheme.attributeNames.size()))
+                    break
+
                 List<List<String>> ruleCandidates = candidates(nonClassAttributes, combinationSize)
                 List<Rule> allRules = ruleCandidates.collect { List<String> attrs ->   // all possible rules
                     active.instances.collect { Instance i ->
@@ -41,12 +44,12 @@ class ILA implements ClassificationAlgorithm {
                 }.toList()
 
                 if (allRules.empty){
-                    if (combinationSize == nonClassAttributes.size()){
-                        def up = new RuntimeException(
-                            "ILA is unable to build classifier! There are instances differing only with class attribute!"
-                        )
-                        throw up
-                    }
+//                    if (combinationSize == nonClassAttributes.size()){
+//                        def up = new RuntimeException(
+//                            "ILA is unable to build classifier! There are instances differing only with class attribute!"
+//                        )
+//                        throw up
+//                    }
                     combinationSize++
                     continue
                 }

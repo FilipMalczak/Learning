@@ -73,7 +73,7 @@ class DataSet {
     }
 
     int getSize(){
-        instances.size()
+        data.size()
     }
 
     DataSet plus(DataSet another){

@@ -39,7 +39,7 @@ class NaiveBayes implements ClassificationAlgorithm {
                 aprioris[i[attr]] ++
         }
         aprioris.keySet().each { String val ->
-            aprioris[val] = aprioris[val]/( data.size + smoothing ? data.scheme.getDomain(attr).size() : 0 )
+            aprioris[val] = aprioris[val]/( data.size + (smoothing ? data.scheme.getDomain(attr).size() : 0 ))
         }
         return { val ->
             return aprioris[val]

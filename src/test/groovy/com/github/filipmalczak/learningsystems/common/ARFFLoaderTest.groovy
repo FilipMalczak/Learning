@@ -1,5 +1,7 @@
 package com.github.filipmalczak.learningsystems.common
 
+import com.github.filipmalczak.learningsystems.model.ARFFLoader
+
 
 class ARFFLoaderTest extends GroovyTestCase {
     ARFFLoader loader

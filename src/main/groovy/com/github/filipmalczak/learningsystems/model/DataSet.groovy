@@ -1,13 +1,14 @@
-package com.github.filipmalczak.learningsystems.common
+package com.github.filipmalczak.learningsystems.model
 
 import groovy.transform.Canonical
+import groovy.transform.CompileStatic
 
+@CompileStatic
 @Canonical
 class DataSet {
     String name
     DataScheme scheme
-    List<List> data
-
+    @Delegate List<List> data
 
     List<Instance> getInstances(){
         data.collect { List vector -> new Instance(vector, scheme) }
@@ -58,10 +59,25 @@ class DataSet {
      * classValueName is value of class attribute, not attributes name.
      */
     List<Instance> getInstancesForClass(String classValueName){
-        instances.findAll { it.classValue == classValueName }
+        instances.findAll { it.classValue == classValueName } as List<Instance>
+    }
+
+    private int copies = 0
+
+    DataSet getEmptyCopy(){
+        new DataSet("${this.name}:copy#${copies++}", scheme, [])
+    }
+
+    DataSet getFullCopy(){
+        new DataSet("${this.name}:copy#${copies++}", scheme, data.collect())
     }
 
     int getSize(){
         instances.size()
+    }
+
+    DataSet plus(DataSet another){
+        assert this.scheme == another.scheme
+        new DataSet("${this.name}+${another.name}".toString(), scheme, (this.data + another.data) as List<List>)
     }
 }

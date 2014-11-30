@@ -1,4 +1,4 @@
-package com.github.filipmalczak.learningsystems.common
+package com.github.filipmalczak.learningsystems.model
 
 import groovy.transform.Immutable
 

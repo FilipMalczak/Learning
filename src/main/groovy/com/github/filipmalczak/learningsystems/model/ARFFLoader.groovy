@@ -1,4 +1,4 @@
-package com.github.filipmalczak.learningsystems.common
+package com.github.filipmalczak.learningsystems.model
 
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j

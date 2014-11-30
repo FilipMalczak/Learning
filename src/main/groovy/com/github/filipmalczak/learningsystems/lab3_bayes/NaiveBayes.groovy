@@ -7,16 +7,29 @@ import com.github.filipmalczak.learningsystems.model.Instance
 
 import groovy.transform.Canonical
 
+import static java.lang.Math.*
+
 @Canonical
 class NaiveBayes implements ClassificationAlgorithm {
 
     boolean smoothing = true
 
+    static final private double SQRT_2_PI = sqrt(2*PI)
+
     private Closure<Double> buildNumericalDistribution(String clazz, String attr, DataSet data){
-        if (data.scheme.isNominalAttribute(attr))
-            buildNominalDistribution(clazz, attr, data)
-        else if (data.scheme.isNumericalAttribute(attr))
-            buildNumericalDistribution(clazz, attr, data)
+        double sum = 0.0;
+        double sumOfSquare = 0.0;
+        data.instances.each { Instance i ->
+            if (i.classValue == clazz) {
+                sum += i[attr]
+                sumOfSquare += i[attr]**2
+            }
+        }
+        double mean = sum / data.size
+        double stdDev = sqrt((sumOfSquare - ((sum**2)/data.size))/(data.size-1))
+        return { val ->
+            exp( -1 * ( (val-mean)**2 )/ (2 * (stdDev**2) ) )/(stdDev* SQRT_2_PI)
+        }
     }
 
     private Closure<Double> buildNominalDistribution(String clazz, String attr, DataSet data){
@@ -35,7 +48,7 @@ class NaiveBayes implements ClassificationAlgorithm {
 
     @Override
     Classifier buildClassifier(DataSet trainingSet) {
-        Model out = new Model([:])
+        Model out = new Model()
         trainingSet.scheme.classDomain.each { String clazz ->
             trainingSet.scheme.attributeNames.each { String attr ->
                 if (attr == trainingSet.scheme.className)
@@ -53,7 +66,7 @@ class NaiveBayes implements ClassificationAlgorithm {
     static class Model implements Classifier{
 
         // [ class -> [ attribute -> { value -> probability } ]]
-        Map<String, Map<String, Closure<Double>>> distributionPerValue
+        Map<String, Map<String, Closure<Double>>> distributionPerValue = [:].withDefault { [:] }
 
         @Override
         String classify(Instance instance) {

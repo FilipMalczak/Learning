@@ -1,5 +1,7 @@
 package com.github.filipmalczak.learningsystems.eval
 
+import static java.lang.Math.abs
+
 class Evaluation {
 
     Map<String, TestOutcome> resultsForClass = [:]
@@ -61,7 +63,11 @@ class Evaluation {
     }
 
     public float getFMeasure(String className){
-        ((2 * getPrecision(className) * getRecall(className)) / (getPrecision(className) + getRecall(className))) as float
+        def prec = getPrecision(className)
+        def rec = getRecall(className)
+        if (abs(prec)<0.000001) // yay floats!
+            return 0.0
+        ((2 * prec * rec ) / (prec + rec)) as float
     }
 
     public float getAccuracy(String className){
@@ -116,7 +122,7 @@ class Evaluation {
     public String toString(){
         "{" +
             "'TP': $weightedTPRate, 'FP': $weightedFPRate, " +
-            "'Acc': $weightedAccuracy, 'Prec': $weightedPrecision, 'Rec': $weightedPrecision" +
+            "'Acc': $weightedAccuracy, 'Prec': $weightedPrecision, 'Rec': $weightedPrecision, " +
             "'F': $weightedFMeasure" +
             "}"
     }

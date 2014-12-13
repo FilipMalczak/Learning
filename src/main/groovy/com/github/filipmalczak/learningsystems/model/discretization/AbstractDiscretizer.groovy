@@ -35,7 +35,7 @@ abstract class AbstractDiscretizer implements Discretizer {
 
     protected static List<String> getDiscreteDomain(List<Number> cuts){
         List<String> out = ["[-inf; ${cuts[0]}]"]
-        (cuts.size()-2).times { int idx ->
+        (cuts.size()-1).times { int idx ->
             out.add "[${cuts[idx]}; ${cuts[idx+1]}]"
         }
         out.add "[${cuts.last()}; inf]"
@@ -49,6 +49,7 @@ abstract class AbstractDiscretizer implements Discretizer {
             if (value > cut)
                 targetRange = i+1
         }
-        instance.modified(attrIdx, newDomain[targetRange])
+        def out = instance.modified(attrIdx, newDomain[targetRange])
+        out
     }
 }

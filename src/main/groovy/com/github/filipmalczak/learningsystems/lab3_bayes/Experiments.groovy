@@ -20,7 +20,7 @@ println "-"*60
         bayes.smoothing = smooth
         (5..20).each { int ranges ->
             FOLDS.each { int fold ->
-                DataSet discrete = new RangeDiscretizer(ranges).discretize(ds).cleanSet
+                DataSet discrete = ds.cleanSet//new RangeDiscretizer(ranges).discretize(ds).cleanSet
                 println(["$ranges", "$fold", "$smooth", CrossValidation.evaluate(bayes, discrete, fold).csvLine].join(";"))
             }
         }

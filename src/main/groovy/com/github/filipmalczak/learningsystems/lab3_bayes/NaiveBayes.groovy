@@ -27,13 +27,18 @@ class NaiveBayes implements ClassificationAlgorithm {
         }
         double mean = sum / data.size
         double stdDev = sqrt((sumOfSquare - ((sum**2)/data.size))/(data.size-1))
+        if (abs(stdDev)<0.000000001)
+            stdDev = 0.000000001
         return { val ->
-            exp( -1 * ( (val-mean)**2 )/ (2 * (stdDev**2) ) )/(stdDev* SQRT_2_PI)
+            exp(-1 * ((val - mean)**2) / (2 * (stdDev**2))) / (stdDev * SQRT_2_PI)
         }
     }
 
     private Closure<Double> buildNominalDistribution(String clazz, String attr, DataSet data){
-        Map<Object, Double> aprioris = [:].withDefault(smoothing ? {1} : { 0 })
+        Map<Object, Double> aprioris = [:]//.withDefault(smoothing ? {1} : { 0 })
+        data.scheme.getDomain(attr).each {
+            aprioris[it] = smoothing ? 1 : 0
+        }
         data.instances.each { Instance i ->
             if (i.classValue == clazz)
                 aprioris[i[attr]] ++
@@ -51,8 +56,8 @@ class NaiveBayes implements ClassificationAlgorithm {
         Model out = new Model()
         trainingSet.scheme.classDomain.each { String clazz ->
             trainingSet.scheme.attributeNames.each { String attr ->
-                if (attr == trainingSet.scheme.className)
-                    out.distributionPerValue[clazz][attr] = out.distributionPerValue[clazz][attr] = { 1.0 }
+                if (attr == trainingSet.scheme.className) {}
+//                    out.distributionPerValue[clazz][attr] = out.distributionPerValue[clazz][attr] = { 1.0 }
                 else if (trainingSet.scheme.isNominalAttribute(attr))
                     out.distributionPerValue[clazz][attr] = buildNominalDistribution(clazz, attr, trainingSet)
                 else if (trainingSet.scheme.isNumericalAttribute(attr))
@@ -73,7 +78,8 @@ class NaiveBayes implements ClassificationAlgorithm {
             instance.scheme.classDomain.max { String clazz ->
                 double prob = 1.0
                 instance.scheme.attributeNames.each { String attr ->
-                    prob *= distributionPerValue[clazz][attr](instance[attr])
+                    if (attr!=instance.scheme.className)
+                        prob *= distributionPerValue[clazz][attr](instance[attr])
                 }
                 return prob
             }

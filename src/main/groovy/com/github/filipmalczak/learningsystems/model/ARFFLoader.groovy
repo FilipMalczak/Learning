@@ -30,7 +30,7 @@ class ARFFLoader {
         def out = []
         reader.eachLine { String line ->
             if (!line.startsWith("%")) {
-                log.debug("parseData line: $line")
+                log.trace("parseData line: $line")
                 def values = line.split(/,/)
                 assert values.size() == names.size()
                 def vector = []

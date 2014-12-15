@@ -11,8 +11,8 @@ DATA_SETS = [
     DataSetResources.glass,
     DataSetResources.iris,
     DataSetResources.wine,
-    DataSetResources.letters,
-    DataSetResources.column
+    DataSetResources.column2,
+    DataSetResources.column3
 ]
 DISTANCES = [
     ["Manhattan", {x -> Distance.manhattan()}],
@@ -20,7 +20,7 @@ DISTANCES = [
     ["Minkovsky[3]", {x -> Distance.minkowsky(3)}],
     ["Minkovsky[5]", {x -> Distance.minkowsky(5)}],
     ["Chebyshev", {x -> Distance.chebyshev()}],
-    ["Mahalanobis", {x -> Distance.(x)}]
+    ["Mahalanobis", {x -> Distance.mahalanobis(x)}]
 ]
 
 DATA_SETS.each { DataSet ds ->

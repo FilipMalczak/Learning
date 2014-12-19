@@ -13,18 +13,24 @@ class ResultInput {
 
     static Closure<Double> proportional = {
         Instance neighbour, Instance classified, Collection<Instance> neighbourhood, Closure<Double> distance ->
-            100.0/distance(neighbour.valuesWithoutClass, classified.valuesWithoutClass)
+            100.0/distance.call(neighbour.valuesWithoutClass, classified.valuesWithoutClass)
+    }
+
+    static Closure<Double> weightedWithDistance = {
+        Instance neighbour, Instance classified, Collection<Instance> neighbourhood, Closure<Double> distance ->
+            def sumOfDistExp = neighbourhood.sum { distance(classified.valuesWithoutClass, it.valuesWithoutClass) }
+            sumOfDistExp / distance.call(classified.valuesWithoutClass, neighbour.valuesWithoutClass)
     }
 
     static Closure<Double> weightedWithExp = {
         Instance neighbour, Instance classified, Collection<Instance> neighbourhood, Closure<Double> distance ->
             def sumOfDistExp = neighbourhood.sum { exp(distance(classified.valuesWithoutClass, it.valuesWithoutClass)) }
-            sumOfDistExp / exp(distance(classified.valuesWithoutClass, neighbour.valuesWithoutClass))
+            sumOfDistExp / exp(distance.call(classified.valuesWithoutClass, neighbour.valuesWithoutClass))
     }
 
     static Closure<Double> weightedWithSquare = {
         Instance neighbour, Instance classified, Collection<Instance> neighbourhood, Closure<Double> distance ->
             def sumOfDistExp = neighbourhood.sum { (distance(classified.valuesWithoutClass, it.valuesWithoutClass))**2 }
-            sumOfDistExp / (distance(classified.valuesWithoutClass, neighbour.valuesWithoutClass))**2
+            sumOfDistExp / (distance.call(classified.valuesWithoutClass, neighbour.valuesWithoutClass))**2
     }
 }

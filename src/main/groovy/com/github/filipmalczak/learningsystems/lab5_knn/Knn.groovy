@@ -14,7 +14,7 @@ class Knn implements ClassificationAlgorithm{
     //those should be protected, or should supply getters at most
     final Closure<Double> resultInput;//(Instance neighbour, Instance classified, Collection<Instance> neighbourhood)
     final int k;
-    Closure<Double> distance;
+    final Closure<Double> distance;
 
     Knn(Closure<Double> resultInput, int k, Closure<Double> distance) {
         this.resultInput = resultInput
@@ -37,7 +37,7 @@ class Knn implements ClassificationAlgorithm{
             Map<String, Double> votes = [:].withDefault {0.0}
             def neighbourhood = getNeighbourhood(instance)
             neighbourhood.each {
-                votes[it.classValue] += resultInput(it, instance, neighbourhood, distance)
+                votes[it.classValue] += resultInput.call(it, instance, neighbourhood, distance)
             }
             return votes.keySet().max { votes[it] }
         }

@@ -4,7 +4,7 @@ import com.github.filipmalczak.learningsystems.eval.CrossValidation
 import com.github.filipmalczak.learningsystems.model.DataSet
 import com.github.filipmalczak.learningsystems.model.DataSetResources
 
-HEADER = ["distance", "voting", "folds", "k", "TP", "FP", "Accuracy", "Precision", "Recall", "F"].join(";")
+HEADER = ["distance", "votingInput", "folds", "k", "TP", "FP", "Accuracy", "Precision", "Recall", "F"].join(";")
 FOLDS = [2, 3, 5, 10]
 KS = [1, 3, 5, 7, 11, 13, 17, 19, 23]
 DATA_SETS = [
@@ -23,18 +23,28 @@ DISTANCES = [
     ["Mahalanobis", {x -> Distance.mahalanobis(x)}]
 ]
 
+INPUTS = [
+    ["constant", ResultInput.constant],
+    ["proportional", ResultInput.proportional],
+    ["weightedWithDistance", ResultInput.weightedWithDistance],
+    ["weightedWithExp", ResultInput.weightedWithExp],
+    ["weightedWithSquare", ResultInput.weightedWithSquare]
+]
+
 DATA_SETS.each { DataSet ds ->
     println ds.name
     println HEADER
-    DISTANCES.each {
-        String distName = it[0]
-        Closure<Closure<Double>> distFactory = it[1];
-        [true, false].each { boolean voting ->
+    DISTANCES.each { distDesc ->
+        String distName = distDesc[0]
+        Closure<Closure<Double>> distFactory = distDesc[1];
+        INPUTS.each { inputDesc ->
+            String inputName = inputDesc[0]
+            Closure<Double> input =inputDesc[1]
             FOLDS.each { int folds ->
                 KS.each { int k ->
                     DataSet clean = ds.cleanSet
-                    def knn = new KnnBuilder(k, voting, distFactory(clean))
-                    println([distName, "$voting", "$folds", "$k", CrossValidation.evaluate(knn, clean, folds).csvLine].join(";"))
+                    def knn = new Knn(input, k, distFactory(clean))
+                    println([distName, "$inputName", "$folds", "$k", CrossValidation.evaluate(knn, clean, folds).csvLine].join(";"))
                 }
             }
         }

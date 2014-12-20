@@ -2,6 +2,8 @@ package com.github.filipmalczak.learningsystems.eval
 
 import groovy.transform.Canonical
 
+import java.text.DecimalFormat
+
 
 class ExperimentsAnalyzer {
     @Canonical
@@ -71,9 +73,15 @@ class ExperimentsAnalyzer {
         out
     }
 
+    static DecimalFormat formatter = new DecimalFormat("##.####");
+
     static String format(List values, int l){
         assert values.size()<=l
-        (values.collect {"$it".replaceAll("[.]", ",")} + (values.size()<l ? [""]*(l-values.size()) : [])).join(";")
+        (values.collect {
+            it instanceof Double ?
+                formatter.format(it).replaceAll("[.]", ",") :
+                "$it"
+        } + (values.size()<l ? [""]*(l-values.size()) : [])).join(";")
     }
 
     static void dumpCSVs(List<Table> tables, Writer writer){

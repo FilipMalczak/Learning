@@ -45,8 +45,10 @@ class Knn implements ClassificationAlgorithm{
         protected Collection<Instance> getNeighbourhood(Instance instance){
             List<Instance> out = []
             knownInstances.instances.each {
-                if (out.size()<k)
+                if (out.size()<k) {
                     out.add it
+                    out = out.sort { distance.call(instance.valuesWithoutClass, it.valuesWithoutClass) }
+                }
                 else
                     if (
                     distance.call(

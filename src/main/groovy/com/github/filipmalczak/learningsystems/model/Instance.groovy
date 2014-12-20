@@ -26,6 +26,9 @@ class Instance extends AbstractList{
 
     @Memoized
     List getValuesWithoutClass(){
-        values[0..(classIdx-1)]+ ((classIdx+1<values.size()-2) ? values[(classIdx+1)..(values.size()-2)] : [] )
+//        values[0..(classIdx-1)]+ ((classIdx+1<values.size()-2) ? values[(classIdx+1)..(values.size()-2)] : [] )
+        def out = [*values]
+        out.remove(classIdx)
+        out
     }
 }

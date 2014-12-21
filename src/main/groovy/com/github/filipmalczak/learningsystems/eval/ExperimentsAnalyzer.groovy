@@ -117,6 +117,49 @@ class ExperimentsAnalyzer {
         findBestLeafes(groups, quality, results)
         out.values = results.collect { r -> out.header.collect { r[it] } }
         out
-        //out.values = map flatten on results
+    }
+
+    static Table rearrangeForXYChart(Table table, List<String> rowKeyAttrs, String valueAttr, String columnKeyAttr){
+        Map<List, Map<Object, List>> data = [:].withDefault { [:].withDefault {[]} }
+        def keyIdxs = rowKeyAttrs.collect { table.header.indexOf(it) }
+        def valIdx = table.header.indexOf(valueAttr)
+        def columnIdx = table.header.indexOf(columnKeyAttr)
+        def colVals = []
+        table.values.each { List row ->
+            data[keyIdxs.collect { row[it] }][row[columnIdx]] = row[valIdx]
+            if (!colVals.contains(row[columnIdx]))
+                colVals.add(row[columnIdx])
+        }
+        colVals = colVals.sort()
+        def out = new Table(table.name+"-rearranged", rowKeyAttrs+colVals.collect { "$columnKeyAttr=$it" }, [])
+        data.keySet().sort().each { List key ->
+            out.values.add(key + colVals.collect { colVal -> data[key].get(colVal, "") })
+        }
+        out
+//        Map<List, Map> rowMapsPerKeyPerColumn = table.values.collect {
+//            [table.header, it].transpose().collectEntries()
+//        }.groupBy ({ Map row ->
+//            rowKeyAttrs.collect { row[it] }
+//        }, {
+//            it[columnKeyAttr]
+//        })
+//        List colNames = rowMapsPerKeyPerColumn.values().collect { it.keySet().asList() }.flatten().toSet().toList().sort()
+//        def header = (rowKeyAttrs + colNames.collect {"$columnKeyAttr=$it"})
+//        def vals = rowMapsPerKeyPerColumn.keySet().sort().collect { List rowKey ->
+//            //this has lists for keys
+//            def valPerCol = [:]
+//            rowMapsPerKeyPerColumn[rowKey].values().each {
+//                valPerCol[it[columnKeyAttr]] = it[valueAttr]
+//            }
+////            def valuePerColumn = rowMapsPerKeyPerColumn[rowKey].values().collectEntries { [it[columnKeyAttr], it[valueAttr]] }
+//            rowKey + colNames.collect {
+//                valPerCol[[it]]
+//            }
+//        }
+//        new Table(
+//            table.name+"-rearranged",
+//            header,
+//            vals
+//        )
     }
 }

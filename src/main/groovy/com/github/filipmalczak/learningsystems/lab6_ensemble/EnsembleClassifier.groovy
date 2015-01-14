@@ -7,7 +7,7 @@ import com.github.filipmalczak.learningsystems.utils.WeightEntry
 import groovy.transform.Canonical
 
 @Canonical
-class EnsembleKnnModel implements Classifier {
+class EnsembleClassifier implements Classifier {
 
     List<WeightEntry<Classifier>> entries
 

@@ -67,6 +67,6 @@ class KnnAdaBoost implements ClassificationAlgorithm{
             }
             instanceWeights = localInstanceWeights
         }
-        new EnsembleKnnModel(classifierEntries)
+        new EnsembleClassifier(classifierEntries)
     }
 }

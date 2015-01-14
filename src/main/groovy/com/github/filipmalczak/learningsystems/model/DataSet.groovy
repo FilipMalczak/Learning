@@ -94,4 +94,21 @@ class DataSet {
         }
         out
     }
+
+    DataSet getSample(double sizeFactor, boolean withReturning=true){
+        assert sizeFactor>0.0 && sizeFactor<=1.0
+        getSample((data.size()*sizeFactor) as int, withReturning)
+    }
+
+    DataSet getSample(int size, boolean withReturning=true){
+        Random random = new Random()
+        Collection<Integer> idxs = (withReturning ? [] as List<Integer> : [] as Set<Integer>)
+        while (idxs.size()<size)
+            idxs.add random.nextInt(data.size())
+        new DataSet(
+            "$name-sample",
+            scheme,
+            idxs.collect { data[it] }
+        )
+    }
 }

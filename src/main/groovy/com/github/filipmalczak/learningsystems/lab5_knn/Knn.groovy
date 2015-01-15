@@ -15,11 +15,13 @@ class Knn implements ClassificationAlgorithm{
     final Closure<Double> resultInput;//(Instance neighbour, Instance classified, Collection<Instance> neighbourhood)
     final int k;
     final Closure<Double> distance;
+    final boolean ignoreSelf
 
-    Knn(Closure<Double> resultInput, int k, Closure<Double> distance) {
+    Knn(Closure<Double> resultInput, int k, Closure<Double> distance, boolean ignoreSelf=false) {
         this.resultInput = resultInput
         this.k = k
         this.distance = distance.memoize()
+        this.ignoreSelf = ignoreSelf
     }
 
     @Override
@@ -45,20 +47,21 @@ class Knn implements ClassificationAlgorithm{
         protected Collection<Instance> getNeighbourhood(Instance instance){
             List<Instance> out = []
             knownInstances.instances.each {
-                if (out.size()<k) {
-                    out.add it
-                    out = out.sort { distance.call(instance.valuesWithoutClass, it.valuesWithoutClass) }
-                }
-                else
-                    if (
-                    distance.call(
-                        instance.valuesWithoutClass,
-                        it.valuesWithoutClass
-                    )<distance.call(
-                        instance.valuesWithoutClass,
-                        out[0].valuesWithoutClass)
-                    )
-                        out = [it] + out[0..(k-2)]
+                if (!ignoreSelf || !instance.is(it))
+                    if (out.size()<k) {
+                        out.add it
+                        out = out.sort { distance.call(instance.valuesWithoutClass, it.valuesWithoutClass) }
+                    }
+                    else
+                        if (
+                        distance.call(
+                            instance.valuesWithoutClass,
+                            it.valuesWithoutClass
+                        )<distance.call(
+                            instance.valuesWithoutClass,
+                            out[0].valuesWithoutClass)
+                        )
+                            out = [it] + out[0..(k-2)]
             }
             out
         }

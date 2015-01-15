@@ -16,7 +16,7 @@ import groovy.transform.Canonical
 @Canonical
 class KnnAdaBoost implements ClassificationAlgorithm{
 
-    Closure<Integer> k //(int classifierIdx) -> int
+    Closure<Integer> k //(int classifierIdx,int numberOfClassifiers) -> int
     int numberOfClassifiers
     double sampleFactor
     Closure<Double> distance = Distance.euclidean()
@@ -32,8 +32,9 @@ class KnnAdaBoost implements ClassificationAlgorithm{
                 { Instance neighbour, Instance classified, Collection<Instance> neighbourhood, Closure<Double> distance ->
                     instanceWeights[neighbour]*distance.call(classified.valuesWithoutClass, neighbour.valuesWithoutClass)
                 },
-                k.call(idx),
-                distance
+                k.call(idx, numberOfClassifiers),
+                distance,
+                true
             )
             Map<Instance, String> results = [:] // simple memoization issue
             Classifier classifier = knn.buildClassifier(trainingSet.getSample(sampleFactor, withReturning))

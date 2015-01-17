@@ -16,8 +16,8 @@ import groovy.transform.Canonical
 @Canonical
 class KnnAdaBoost implements ClassificationAlgorithm{
 
-    Closure<Integer> k //(int classifierIdx,int numberOfClassifiers) -> int
     int numberOfClassifiers
+    Closure<Integer> k //(int classifierIdx,int numberOfClassifiers) -> int
     double sampleFactor
     Closure<Double> distance = Distance.euclidean()
     boolean withReturning = true

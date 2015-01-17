@@ -2,9 +2,6 @@ package com.github.filipmalczak.learningsystems.lab6_ensemble
 
 import com.github.filipmalczak.learningsystems.eval.CrossValidation
 import com.github.filipmalczak.learningsystems.eval.Evaluation
-import com.github.filipmalczak.learningsystems.lab5_knn.Distance
-import com.github.filipmalczak.learningsystems.lab5_knn.Knn
-import com.github.filipmalczak.learningsystems.lab5_knn.ResultInput
 import com.github.filipmalczak.learningsystems.model.ClassificationAlgorithm
 import com.github.filipmalczak.learningsystems.model.DataSet
 import com.github.filipmalczak.learningsystems.model.DataSetResources
@@ -44,21 +41,23 @@ List<Integer> folds = [
     10
 ]
 
-println "dataSet;fold;numberOfClassfiers;samplingFactor;classificationAlgorithm;${Evaluation.csvHeader}"
 dataSets.each { DataSet ds ->
+    println ds.name
+    println "fold;numberOfClassfiers;samplingFactor;k;classificationAlgorithm;${Evaluation.csvHeader}"
     numbersOfClassifiers.each { int noc ->
         samplingFactors.each { double sf ->
             ks.each { String kName, Closure<Integer> k ->
                 [
                     new KnnBagging(noc, k, sf),
-                    new KnnAdaBoost(k, noc, sf) // todo: awfully ugly; change order of args
+                    new KnnAdaBoost(noc, k, sf)
                 ].each { ClassificationAlgorithm ca ->
                     folds.each { int fold ->
-                        println "${ds.name};$fold;$noc;$sf;${ca.class.simpleName};${CrossValidation.evaluate(ca, ds.cleanSet, fold).csvLine}"
+                        println "$fold;$noc;$sf;$kName;${ca.class.simpleName};${CrossValidation.evaluate(ca, ds.cleanSet, fold).csvLine}"
                     }
 
                 }
             }
         }
     }
+    println()
 }

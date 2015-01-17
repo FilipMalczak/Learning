@@ -132,7 +132,7 @@ class Evaluation {
     }
 
     static String getCsvHeader() {
-        ["weightedTPRate", "weightedFPRate", "weightedAccuracy", "weightedPrecision", "weightedRecall", "weightedFMeasure"].join(";")
+        ["weightedTPRate", "weightedFPRate", "weightedAccuracy", "weightedPrecision", "weightedRecall", "F"].join(";")
     }
 
     @Override

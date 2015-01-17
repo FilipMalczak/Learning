@@ -8,15 +8,15 @@ List<Table> tables = readCSV(new File(path))
 List<Table> toShow = []
 List<Table> forDiagrams = []
 tables.each { table ->
-    def best = findBest(table, ["votingInput", "folds"], "F")
+    def best = findBest(table, ["votingInput", "fold"], "F")
     toShow << best
-    forDiagrams << rearrangeForXYChart(best, ["votingInput"], "F", "folds")
-    best = findBest(table, ["k", "folds"], "F")
+    forDiagrams << rearrangeForXYChart(best, ["votingInput"], "F", "fold")
+    best = findBest(table, ["k", "fold"], "F")
     toShow << best
-    forDiagrams << rearrangeForXYChart(best, ["k"], "F", "folds")
-    best = findBest(table, ["distance", "folds"], "F")
+    forDiagrams << rearrangeForXYChart(best, ["k"], "F", "fold")
+    best = findBest(table, ["distance", "fold"], "F")
     toShow << best
-    forDiagrams << rearrangeForXYChart(best, ["distance"], "F", "folds")
+    forDiagrams << rearrangeForXYChart(best, ["distance"], "F", "fold")
 }
 
 new File("./summary.csv").withPrintWriter {

@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'application'
 
-mainClassName = "com.github.filipmalczak.learningsystems.lab5_knn.Experiments"
+mainClassName = "com.github.filipmalczak.learningsystems.lab6_ensemble.Experiments"
 
 repositories {
     mavenCentral()

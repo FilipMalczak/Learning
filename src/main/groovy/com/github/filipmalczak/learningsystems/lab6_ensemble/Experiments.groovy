@@ -31,7 +31,7 @@ List<Double> samplingFactors = [
 Map<Closure<Integer>> ks = [
     "const": {idx, size -> 3},
     "growing": {idx, size -> 3 + Math.round(4.0*idx/size) as Integer},
-    "falling": {idx, size -> 7 - Math.round(3.0*idx/size) as Integer}
+    "falling": {idx, size -> 7 - Math.round(4.0*idx/size) as Integer}
 ]
 
 List<Integer> folds = [

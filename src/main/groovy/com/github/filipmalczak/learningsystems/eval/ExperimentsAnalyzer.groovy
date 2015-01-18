@@ -35,7 +35,7 @@ class ExperimentsAnalyzer {
         List<Table> out = []
         Table currentTable;
         f.eachLine {
-            List<String> p = parts(it)
+            List<String> p = parts(it.trim())
             if (p.size()==1) {// table name
                 assert state == State.READY
                 currentTable = new Table(p[0])

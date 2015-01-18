@@ -15,9 +15,12 @@ tables.each { table ->
     best = findBest(table, ["samplingFactor", "fold"], "F")
     toShow << best
     forDiagrams << rearrangeForXYChart(best, ["samplingFactor"], "F", "fold")
-    best = findBest(table, ["classificationAlgorithm", "fold"], "F")
+    best = findBest(table, ["k", "fold"], "F")
     toShow << best
-    forDiagrams << rearrangeForXYChart(best, ["classificationAlgorithm"], "F", "fold")
+    forDiagrams << rearrangeForXYChart(best, ["k"], "F", "fold")
+    best = findBest(table, ["ensemblingAlgorithm", "fold"], "F")
+    toShow << best
+    forDiagrams << rearrangeForXYChart(best, ["ensemblingAlgorithm"], "F", "fold")
 }
 
 new File("./summary.csv").withPrintWriter {

@@ -1,8 +1,3 @@
-:compileJava UP-TO-DATE
-:compileGroovy
-:processResources UP-TO-DATE
-:classes
-:run
 wine
 fold;numberOfClassfiers;samplingFactor;k;classificationAlgorithm;weightedTPRate;weightedFPRate;weightedAccuracy;weightedPrecision;weightedRecall;F
 2;2;0.1;const;KnnBagging;0.505618;0.1894033;0.6771241;0.6983811;0.505618;0.4596046
@@ -1811,8 +1806,3 @@ fold;numberOfClassfiers;samplingFactor;k;classificationAlgorithm;weightedTPRate;
 3;25;1.0;falling;KnnAdaBoost;0.6542056;0.12911652;0.8276269;0.6589107;0.6542056;0.654597
 5;25;1.0;falling;KnnAdaBoost;0.6635514;0.12550464;0.82856584;0.6634167;0.6635514;0.6611098
 10;25;1.0;falling;KnnAdaBoost;0.6869159;0.12294753;0.8421915;0.6755613;0.6869159;0.6767008
-
-
-BUILD SUCCESSFUL
-
-Total time: 4 hrs 56 mins 0.501 secs
